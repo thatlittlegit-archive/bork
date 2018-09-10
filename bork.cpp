@@ -47,18 +47,18 @@ int main(int argc, char *argv[])
 						11);
 	if (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0) {
 		std::cout
-				<< "Welcome to Börk, a file-sharing program built with libtorrent by thatlittlegit.\n";
-		<< "It's licensed under the GNU GPL 3. (thatlittlegit is not responsible for any\n";
-		<< "									files transferred that are not legal to\n";
-		<< "									transfer, such as 'cracked' games.)\n";
-		<< "\n";
-		<< "Usage: " << argv[0] << " <file> <tracker>\n";
-		<< "	   Creates a new torrent file for <file>, using <tracker> as a tracker.\n";
-		<< "	   " << argv[0] << " [--help|-h]\n";
-		<< "	   Shows this help text.\n";
-		<< "\n";
-		<< "Written with C++. Contact thatlittlegit at <personal@thatlittlegit.tk>."
-		<< std::endl;
+				<< "Welcome to Börk, a file-sharing program built with libtorrent by thatlittlegit.\n"
+				<< "It's licensed under the GNU GPL 3. (thatlittlegit is not responsible for any\n"
+				<< "									files transferred that are not legal to\n"
+				<< "									transfer, such as 'cracked' games.)\n"
+				<< "\n"
+				<< "Usage: " << argv[0] << " <file> <tracker>\n"
+				<< "	   Creates a new torrent file for <file>, using <tracker> as a tracker.\n"
+				<< "	   " << argv[0] << " [--help|-h]\n"
+				<< "	   Shows this help text.\n"
+				<< "\n"
+				<< "Written with C++. Contact thatlittlegit at <personal@thatlittlegit.tk>."
+				<< std::endl;
 		return 0;
 	}
 
