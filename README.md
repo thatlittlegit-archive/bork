@@ -1,7 +1,11 @@
 # börk
-A webserver written in Perl. Named after a common theme in
+A torrent generator, written in C++. Named after a common theme in
 [r/polandball comics](https://www.reddit.com/r/polandball) and after what it was
 originally going to be a fork of; [`quark`](https://tools.suckless.org/quark).
+
+## Dependencies
+Börk depends on [libtorrent](https://libtorrent.org), often known as
+`libtorrent-rasterbar`.
 
 ## Usage
 Run `make` and then `bork`. It takes two command line arguments: `file` and
