@@ -16,56 +16,61 @@
 
 #include "logging.hpp"
 
-#define quit_with_error(error, code) \
-	{                                \
-		log$error(error);            \
-		exit(code);                  \
+#define quit_with_error_if(condition, error, code) \
+	if (condition) {                               \
+		log$error(error);                          \
+		exit(code);                                \
 	}
 
 using namespace libtorrent;
+
+char *progname;
 
 int fileSize(const char *filename)
 {
 	// thanks to Spyros on StackOverflow (answer 5840160)
 	std::ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
 
-	if (in.tellg() == -1)
-		quit_with_error("Couldn't get file size of " << filename
-													 << "; does it exist?",
-						12);
+	quit_with_error_if(
+			in.tellg() == -1,
+			"Couldn't get file size of " << filename << "; does it exist?", 12);
 	return in.tellg();
+}
+
+void print_help()
+{
+	std::cout
+			<< "Welcome to Börk, a file-sharing program built with libtorrent by thatlittlegit.\n"
+			<< "It's licensed under the GNU GPL 3. (thatlittlegit is not responsible for any\n"
+			<< "									files transferred that are not legal to\n"
+			<< "									transfer, such as 'cracked' games.)\n"
+			<< "\n"
+			<< "Usage: " << progname << " <file> <tracker>\n"
+			<< "	   Creates a new torrent file for <file>, using <tracker> as a tracker.\n"
+			<< "	   " << progname << " [--help|-h]\n"
+			<< "	   Shows this help text.\n"
+			<< "\n"
+			<< "Written with C++. Contact thatlittlegit at <personal@thatlittlegit.tk>."
+			<< std::endl;
 }
 
 int main(int argc, char *argv[])
 {
+	progname = argv[0];
 	log$info("börk! version " << VERSION << "; by thatlittlegit");
 
 	// Don't segfault with no arguments
-	if (argc < 2)
-		quit_with_error("Invalid number of arguments; see " << argv[0]
-															<< " --help",
-						11);
+	quit_with_error_if(
+			argc < 2,
+			"Invalid number of arguments; see " << argv[0] << " --help", 11);
 	if (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0) {
-		std::cout
-				<< "Welcome to Börk, a file-sharing program built with libtorrent by thatlittlegit.\n"
-				<< "It's licensed under the GNU GPL 3. (thatlittlegit is not responsible for any\n"
-				<< "									files transferred that are not legal to\n"
-				<< "									transfer, such as 'cracked' games.)\n"
-				<< "\n"
-				<< "Usage: " << argv[0] << " <file> <tracker>\n"
-				<< "	   Creates a new torrent file for <file>, using <tracker> as a tracker.\n"
-				<< "	   " << argv[0] << " [--help|-h]\n"
-				<< "	   Shows this help text.\n"
-				<< "\n"
-				<< "Written with C++. Contact thatlittlegit at <personal@thatlittlegit.tk>."
-				<< std::endl;
+		print_help();
 		return 0;
 	}
 
-	if (argc != 3)
-		quit_with_error("Invalid number of arguments; see " << argv[0]
-															<< " --help",
-						11);
+	quit_with_error_if(
+			argc != 3,
+			"Invalid number of arguments; see " << argv[0] << " --help", 11);
 	log$debug("passed argc checks");
 
 	file_storage files;
