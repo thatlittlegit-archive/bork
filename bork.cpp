@@ -54,7 +54,8 @@ void print_help()
 			<< std::endl;
 }
 
-create_torrent create_torrent_for_file(char* filename, char* tracker) {
+create_torrent create_torrent_for_file(char *filename, char *tracker)
+{
 	file_storage file;
 	int filesize = file_size(filename);
 	log$info("found file " << filename << " to be " << filesize << " bytes");
@@ -64,7 +65,7 @@ create_torrent create_torrent_for_file(char* filename, char* tracker) {
 	create_torrent torrent(file);
 	torrent.add_tracker(tracker);
 
-	char* borkinfo = (char*) malloc(strlen("bork ") + strlen(VERSION) + 1);
+	char *borkinfo = (char *)malloc(strlen("bork ") + strlen(VERSION) + 1);
 	strcpy(borkinfo, "bork " VERSION);
 	torrent.set_creator(borkinfo);
 
@@ -100,6 +101,7 @@ int main(int argc, char *argv[])
 	snprintf(output_file, strlen(argv[1]) + 8 + 1, "%s.torrent", argv[1]);
 
 	std::ofstream out(output_file, std::ios_base::binary);
-	bencode(std::ostream_iterator<char>(out), create_torrent_for_file(argv[1], argv[2]).generate());
+	bencode(std::ostream_iterator<char>(out),
+			create_torrent_for_file(argv[1], argv[2]).generate());
 	log$info("Done.");
 }

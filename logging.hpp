@@ -21,8 +21,8 @@
 #define log$with_template_to_out(color, name, x) \
 	std::cout << log$prefix_template(color, name) << x << std::endl
 #define log$debug(x) log$with_template_to_out(LOGGING_DEBUG_COLOR, "D", x)
-#define log$info(x)  log$with_template_to_out(LOGGING_INFO_COLOR,  "I", x)
-#define log$warn(x)  log$with_template_to_out(LOGGING_WARN_COLOR,  "W", x)
+#define log$info(x) log$with_template_to_out(LOGGING_INFO_COLOR, "I", x)
+#define log$warn(x) log$with_template_to_out(LOGGING_WARN_COLOR, "W", x)
 #define log$error(x) log$with_template_to_out(LOGGING_ERROR_COLOR, "E", x)
 
 #endif
