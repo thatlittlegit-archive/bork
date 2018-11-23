@@ -8,12 +8,11 @@ bork: $(wildcard *.cpp) $(wildcard *.hpp)
 clean:
 	-rm bork
 
-format: $(wildcard *.cpp) $(wildcard *.hpp)
-	-[ -f /tmp/bork ] && mv /tmp/bork $(TMPBORK_TEMPORARY)
-	for file in $^; do \
-		clang-format $$file >/tmp/bork; \
-		mv /tmp/bork $$file; \
-	done
-	-mv $(TMPBORK_TEMPORARY) /tmp/bork
+%.formatted: %.cpp
+	clang-format -i $^
+%.formatted: %.hpp
+	clang-format -i $^
 
-.PHONY: clean format
+format: bork.formatted logging.formatted
+
+.PHONY: clean format %.formatted
