@@ -20,16 +20,16 @@
 	"[\x1B[" color << "m" << name << RESET_CODE << "] "
 
 #define log$debug(x)                                                    \
-	std::cout << log$prefix_template(LOGGING_DEBUG_COLOR, "DEBUG") << x \
+	std::cout << log$prefix_template(LOGGING_DEBUG_COLOR, "D") << x \
 			  << std::endl
 #define log$info(x)                                                   \
-	std::cout << log$prefix_template(LOGGING_INFO_COLOR, "INFO") << x \
+	std::cout << log$prefix_template(LOGGING_INFO_COLOR, "I") << x \
 			  << std::endl
 #define log$warn(x)                                                   \
-	std::cout << log$prefix_template(LOGGING_WARN_COLOR, "WARN") << x \
+	std::cout << log$prefix_template(LOGGING_WARN_COLOR, "W") << x \
 			  << std::endl
 #define log$error(x)                                                    \
-	std::cout << log$prefix_template(LOGGING_ERROR_COLOR, "ERROR") << x \
+	std::cout << log$prefix_template(LOGGING_ERROR_COLOR, "E") << x \
 			  << std::endl
 
 #endif
