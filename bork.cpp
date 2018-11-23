@@ -26,14 +26,14 @@ using namespace libtorrent;
 
 char *progname;
 
-int fileSize(const char *filename)
+int file_size(const char *filename)
 {
 	// thanks to Spyros on StackOverflow (answer 5840160)
 	std::ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
 
-	quit_with_error_if(
-			in.tellg() == -1,
-			"Couldn't get file size of " << filename << "; does it exist?", 12);
+	if (in.tellg() == -1)
+		throw std::domain_error("Couldn't get file size; does it exist?");
+
 	return in.tellg();
 }
 
@@ -52,6 +52,28 @@ void print_help()
 			<< "\n"
 			<< "Written with C++. Contact thatlittlegit at <personal@thatlittlegit.tk>."
 			<< std::endl;
+}
+
+create_torrent create_torrent_for_file(char* filename, char* tracker) {
+	file_storage file;
+	int filesize = file_size(filename);
+	log$info("found file " << filename << " to be " << filesize << " bytes");
+	file.add_file(filename, filesize);
+	log$debug("file_storage initialized");
+
+	create_torrent torrent(file);
+	torrent.add_tracker(tracker);
+
+	char* borkinfo = (char*) malloc(strlen("bork ") + strlen(VERSION) + 1);
+	strcpy(borkinfo, "bork " VERSION);
+	torrent.set_creator(borkinfo);
+
+	log$debug("most torrent initialization (tracker, file, creator) done");
+
+	set_piece_hashes(torrent, ".");
+
+	log$debug("finished making torrent");
+	return torrent;
 }
 
 int main(int argc, char *argv[])
@@ -73,25 +95,11 @@ int main(int argc, char *argv[])
 			"Invalid number of arguments; see " << argv[0] << " --help", 11);
 	log$debug("passed argc checks");
 
-	file_storage files;
-	files.add_file(argv[1], fileSize(argv[1]));
-	log$debug("created file_storage");
-
-	create_torrent torrent(files);
-	torrent.add_tracker(argv[2]);
-
-	char *borkinfo = (char *)malloc(strlen("bork ") + strlen(VERSION));
-	strcat(borkinfo, "bork ");
-	strcat(borkinfo, VERSION);
-	torrent.set_creator(borkinfo);
-
 	char *output_file =
-			(char *)malloc(strlen(argv[1]) + 8); // 8 = strlen(".torrent")
-	strcat(output_file, argv[1]);
-	strcat(output_file, ".torrent");
-
-	set_piece_hashes(torrent, ".");
+			(char *)malloc(strlen(argv[1]) + 8 + 1); // 8 = strlen(".torrent")
+	snprintf(output_file, strlen(argv[1]) + 8 + 1, "%s.torrent", argv[1]);
 
 	std::ofstream out(output_file, std::ios_base::binary);
-	bencode(std::ostream_iterator<char>(out), torrent.generate());
+	bencode(std::ostream_iterator<char>(out), create_torrent_for_file(argv[1], argv[2]).generate());
+	log$info("Done.");
 }
