@@ -18,18 +18,11 @@
 /// and name.
 #define log$prefix_template(color, name) \
 	"[\x1B[" color << "m" << name << RESET_CODE << "] "
-
-#define log$debug(x)                                                    \
-	std::cout << log$prefix_template(LOGGING_DEBUG_COLOR, "D") << x \
-			  << std::endl
-#define log$info(x)                                                   \
-	std::cout << log$prefix_template(LOGGING_INFO_COLOR, "I") << x \
-			  << std::endl
-#define log$warn(x)                                                   \
-	std::cout << log$prefix_template(LOGGING_WARN_COLOR, "W") << x \
-			  << std::endl
-#define log$error(x)                                                    \
-	std::cout << log$prefix_template(LOGGING_ERROR_COLOR, "E") << x \
-			  << std::endl
+#define log$with_template_to_out(color, name, x) \
+	std::cout << log$prefix_template(color, name) << x << std::endl
+#define log$debug(x) log$with_template_to_out(LOGGING_DEBUG_COLOR, "D", x)
+#define log$info(x)  log$with_template_to_out(LOGGING_INFO_COLOR,  "I", x)
+#define log$warn(x)  log$with_template_to_out(LOGGING_WARN_COLOR,  "W", x)
+#define log$error(x) log$with_template_to_out(LOGGING_ERROR_COLOR, "E", x)
 
 #endif
