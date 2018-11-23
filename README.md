@@ -1,3 +1,7 @@
+## Deprecation Notice
+Please use the 'New Torrent' feature in your torrent client instead. This
+project was created when I thought this feature didn't work; but it does.
+
 # börk
 A torrent generator, written in C++. Named after a common theme in
 [r/polandball comics](https://www.reddit.com/r/polandball) and after what it was
